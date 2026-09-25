@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "always-sprint",
+	"version": "${version}",
+	"name": "Always sprint",
+	"description": "A simple minecraft mod that always make you sprint no matter if you presses ctrl or not that may help pvp players too much but its not recommended for survival single player or parkour",
+	"authors": [
+		"Void"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": ""
+	},
+	"license": "MIT-License",
+	"icon": "assets/always-sprint/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.voidmods.mods.AlwaysSprint"
+		],
+		"client": [
+			"net.voidmods.mods.AlwaysSprintClient"
+		],
+		"fabric-datagen": [
+			"net.voidmods.mods.AlwaysSprintDataGenerator"
+		]
+	},
+	"mixins": [
+		"always-sprint.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
