@@ -2,13 +2,40 @@ package net.voidmods.mods;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 
 public class AlwaysSprintClient implements ClientModInitializer {
+
+    public static boolean isModEnabled = true;
+    private static KeyMapping togglekey;
+
     @Override
     public void onInitializeClient() {
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
 
+
+        togglekey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+                "Always Sprint Mod",
+                InputConstants.Type.KEYSYM,
+                -1,
+                KeyMapping.Category.MOVEMENT
+        ));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            // Keybind section
+            while (togglekey.consumeClick()) {
+                isModEnabled = !isModEnabled;
+
+                if (client.player != null) {
+                    String state = isModEnabled ? "§l§aEnabled" : "§l§cDisabled";
+                    client.player.sendSystemMessage(Component.literal("Always Sprint: " + state));
+                }
+            }
+            // checks if mod enabled
+            if (!isModEnabled) return;
             // checks if player exist or not to insure we process valid states
             if (client.player == null) return;
             // checks if player is holding forward moving key or not
@@ -26,7 +53,6 @@ public class AlwaysSprintClient implements ClientModInitializer {
                 if (hasEnoughFood && isNotBlind && isNotSlow) {
                     client.player.setSprinting(true);
                 }
-
         });
     }
 }
